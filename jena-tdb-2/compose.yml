@@ -1,0 +1,13 @@
+services:
+  jena-tdb:
+    build: .
+    volumes:
+      - ./docker-scripts:/data/docker-scripts
+      - ../experiment/datasets:/data/datasets
+      - ../experiment/queries:/data/queries
+      - ../experiment/tdb-databases:/data/tdb-databases
+    environment:
+      - JVM_ARGS=-Xmx16G
+    working_dir: /data
+    stdin_open: true
+    tty: true
