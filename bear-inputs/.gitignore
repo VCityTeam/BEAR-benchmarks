@@ -1,0 +1,7 @@
+*
+
+!.gitignore
+!locked-sources.json
+!README.md
+!download-and-verify.sh
+!download-all.sh
