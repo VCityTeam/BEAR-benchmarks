@@ -59,18 +59,28 @@ info "==================================="
 echo ""
 
 if [ "$VERBOSE" = "true" ]; then
-    VERBOSE_FLAG=" --verbose"
+    VERBOSE_FLAG="--verbose"
 fi
 
-info "Experiment configuration ready."
+if [ -n "$GRANULARITY" ]; then
+    GRANULARITY_FLAG="--granularity $GRANULARITY"
+fi
 
-# TODO: Add experiment execution logic here
 info "Starting experiment..."
 
-if "$SCRIPT_DIR/bear-inputs/download-all.sh" -d "$DATASET$VERBOSE_FLAG"; then
+info "Downloading inputs from BEAR..."
+if "$SCRIPT_DIR/bear-inputs/download-all.sh" -d "$DATASET" $VERBOSE_FLAG; then
     success "Dataset files downloaded successfully!"
 else
     error "Failed to download dataset files"
+fi
+
+info "Extracting dataset..."
+OUTPUT_DIR="$SCRIPT_DIR/experiment/datasets"
+if $SCRIPT_DIR/bear-inputs/extract.sh --dataset "$DATASET" --policy "$POLICY" --outdir "$OUTPUT_DIR" $GRANULARITY_FLAG $VERBOSE_FLAG; then
+    success "Dataset extracted successfully to $OUTPUT_DIR"
+else
+    error "Failed to extract dataset"
 fi
 
 # Placeholder for additional experiment execution steps
