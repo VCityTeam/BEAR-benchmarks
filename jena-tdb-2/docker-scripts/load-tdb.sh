@@ -57,6 +57,63 @@ load_nq_directory() {
     echo ""
 }
 
+# Function to load CB (Change-Based) datasets with additions/deletions
+load_cb_directory() {
+    local dir=$1
+    local basename=$(basename "$dir")
+
+    echo "Loading: ${basename} (Change-Based dataset)"
+    echo "  Source: $dir"
+    echo "  Target: $TDB_LOC"
+    echo ""
+    echo "Converting .nt files to .nq with named graphs..."
+
+    # Create temporary directory for converted files
+    local temp_dir="/tmp/tdb-cb-temp-$$"
+    mkdir -p "$temp_dir"
+
+    # Convert all added/deleted .nt files to .nq with named graphs
+    local file_count=0
+    for file in "$dir"/data-added_*.nt "$dir"/data-deleted_*.nt; do
+        if [ -f "$file" ]; then
+            local filename=$(basename "$file" .nt)
+            local nq_file="$temp_dir/${filename}.nq"
+
+            # Extract change type (added/deleted) and version range
+            if [[ $filename =~ data-(added|deleted)_([0-9]+)-([0-9]+) ]]; then
+                local change_type="${BASH_REMATCH[1]}"
+                local version_from="${BASH_REMATCH[2]}"
+                local version_to="${BASH_REMATCH[3]}"
+
+                # Create named graph URI
+                local graph_uri="http://bear.org/changes/${change_type}/${version_from}-${version_to}"
+
+                # Convert .nt to .nq by adding the graph URI to each line
+                # Remove trailing " ." from N-Triples and add graph URI with " ."
+                awk -v graph="<$graph_uri>" '{sub(/ \.$/, ""); print $0 " " graph " ."}' "$file" > "$nq_file"
+
+                file_count=$((file_count + 1))
+                echo "  Converted: $filename -> ${filename}.nq (graph: $graph_uri)"
+            fi
+        fi
+    done
+
+    echo ""
+    echo "Converted $file_count files. Loading into TDB2..."
+
+    # Load all converted .nq files with xloader
+    if [ $file_count -gt 0 ]; then
+        tdb2.xloader --loc="$TDB_LOC" "$temp_dir"/*.nq
+        echo "  ✓ Complete"
+    else
+        echo "  ⚠ No files to load"
+    fi
+
+    # Cleanup
+    rm -rf "$temp_dir"
+    echo ""
+}
+
 
 
 # Check if extracted directory exists
@@ -75,11 +132,15 @@ if [ -f "$NQ_FILE" ]; then
 elif [ -d "$DATASET_DIR" ] && [ "$(ls -A $DATASET_DIR/*.nq 2>/dev/null)" ]; then
     echo "Found directory with .nq files: $DATASET_DIR"
     load_nq_directory "$DATASET_DIR"
+elif [ -d "$DATASET_DIR" ] && [ "$(ls -A $DATASET_DIR/data-added_*.nt 2>/dev/null)" ]; then
+    echo "Found directory with Change-Based (CB) .nt files: $DATASET_DIR"
+    load_cb_directory "$DATASET_DIR"
 else
     echo "ERROR: Dataset not found: ${DATASET_NAME}"
     echo "Looked for:"
     echo "  - ${NQ_FILE}"
     echo "  - ${DATASET_DIR}/ (with .nq files)"
+    echo "  - ${DATASET_DIR}/ (with CB .nt files: data-added_*.nt, data-deleted_*.nt)"
     exit 1
 fi
 
