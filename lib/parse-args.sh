@@ -11,7 +11,7 @@ NC='\033[0m' # No Color
 
 # Function to print usage
 usage() {
-    echo "Usage: $0 -d|--dataset <dataset> -p|--policy <policy> -t|--tool <tool> [-g|--granularity <granularity>] [-c|--clear] [-v|--verbose]"
+    echo "Usage: $0 -d|--dataset <dataset> -p|--policy <policy> -t|--tool <tool> [-g|--granularity <granularity>] [-c|--clear] [-v|--verbose] [--tag <tag>]"
     echo ""
     echo "Required Arguments:"
     echo "  -d, --dataset <value>   : BEAR-A | BEAR-B | BEAR-C"
@@ -24,13 +24,14 @@ usage() {
     echo "Optional Arguments:"
     echo "  -c, --clear             : Clear previous data (default: false)"
     echo "  -v, --verbose           : Enable verbose output (default: false)"
+    echo "  --tag <value>           : Custom tag for this experiment run (default: username)"
     echo "  -h, --help              : Show this help message"
     echo ""
     echo "Examples:"
     echo "  $0 -d BEAR-A -p IC -t jena-tdb-2"
     echo "  $0 --dataset BEAR-A --policy IC --tool jena-tdb-2 --clear --verbose"
-    echo "  $0 -d BEAR-B -g day -p CBTB -t rdf-hdt -c -v"
-    echo "  $0 -d BEAR-C -p TB -t conver-g"
+    echo "  $0 -d BEAR-B -g day -p CBTB -t rdf-hdt -c -v --tag experiment-1"
+    echo "  $0 -d BEAR-C -p TB -t conver-g --tag baseline"
 }
 
 # Function to print error messages
@@ -96,6 +97,7 @@ validate_granularity() {
 parse_and_validate_args() {
     # Default values for optional arguments
     CLEAR=false
+    TAG="$(whoami)"
     VERBOSE=false
 
     # Initialize required arguments as empty
@@ -130,6 +132,11 @@ parse_and_validate_args() {
             -v|--verbose)
                 VERBOSE=true
                 shift
+                ;;
+            --tag)
+                TAG="$2"
+                shift 2
+
                 ;;
             -h|--help)
                 usage
@@ -173,6 +180,7 @@ parse_and_validate_args() {
     fi
 
     # Export variables for use in calling script
+    export BEAR_TAG="$TAG"
     export BEAR_DATASET="$DATASET"
     export BEAR_POLICY="$POLICY"
     export BEAR_TOOL="$TOOL"

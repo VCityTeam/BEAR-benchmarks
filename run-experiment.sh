@@ -41,10 +41,12 @@ TOOL="$BEAR_TOOL"
 GRANULARITY="$BEAR_GRANULARITY"
 CLEAR="$BEAR_CLEAR"
 VERBOSE="$BEAR_VERBOSE"
+TAG="$BEAR_TAG"
 
 info "==================================="
 info "BEAR Benchmark Experiment"
 info "==================================="
+echo "Tag:      $TAG"
 echo "Dataset:  $DATASET"
 if [ -n "$GRANULARITY" ]; then
     echo "Granularity: $GRANULARITY"
