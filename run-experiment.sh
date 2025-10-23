@@ -110,6 +110,15 @@ else
 fi
 cd ..
 
+# Set granularity to N/A if not set (for BEAR-A and BEAR-C)
+GRANULARITY_VALUE="${GRANULARITY:-N/A}"
+info "Logging database size..."
+if $SCRIPT_DIR/$TOOL/log-size.sh --dataset-full-name "$DATASET_FULL_NAME" --dataset "$DATASET" --policy "$POLICY" --granularity "$GRANULARITY_VALUE" --tag "$TAG"; then
+    success "Database size logged successfully!"
+else
+    error "Failed to log database size"
+fi
+
 info "Preparing queries..."
 if $SCRIPT_DIR/$TOOL/prepare-queries.sh "$DATASET"; then
     success "Queries for $DATASET prepared successfully!"
