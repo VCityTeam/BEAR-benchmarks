@@ -19,51 +19,51 @@
     "hash": "a2609d97bdef5bf38a7fdc31aaa80849deb3d91ba4393a8a2a12a24b215a7084",
     "archive": "gz"
   },
-  "BEAR-A/queries/s-queries-lowCardinality": {
+  "BEAR-A/queries/raw/s-queries-lowCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/s/s-queries-lowCardinality.txt",
     "hash": "6098be10ac334b9b952e1a3744903cec87917c6372edbb8d3554c146896f8355"
   },
-  "BEAR-A/queries/s-queries-highCardinality": {
+  "BEAR-A/queries/raw/s-queries-highCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/s/s-queries-highCardinality.txt",
     "hash": "faa37c4f78986460e792dc958f74b4ab3bd7b26a7650cd25bfc3ebbb62b3b246"
   },
-  "BEAR-A/queries/p-queries-lowCardinality": {
+  "BEAR-A/queries/raw/p-queries-lowCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/p/p-queries-lowCardinality.txt",
     "hash": "6df1b52431a64c5412a93228e9f7fdeb04780b9b435d3b1b2b75fea82c22fe7f"
   },
-  "BEAR-A/queries/p-queries-highCardinality": {
+  "BEAR-A/queries/raw/p-queries-highCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/p/p-queries-highCardinality.txt",
     "hash": "9cb3d3f27c5bd26d2c8c82b99778785175658094fafe15757a67c98e5f1eaf5b"
   },
-  "BEAR-A/queries/o-queries-lowCardinality": {
+  "BEAR-A/queries/raw/o-queries-lowCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/o/o-queries-lowCardinality.txt",
     "hash": "d56f470970d56776161106e82e73944fd24d931eb417879370363933302d2732"
   },
-  "BEAR-A/queries/o-queries-highCardinality": {
+  "BEAR-A/queries/raw/o-queries-highCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/o/o-queries-highCardinality.txt",
     "hash": "90f0f59bed6e825c683bcfe2b93ecb5bc199fa38c3e16a33a3c1271674f83bbe"
   },
-  "BEAR-A/queries/sp-queries-lowCardinality": {
+  "BEAR-A/queries/raw/sp-queries-lowCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/sp/sp-queries-lowCardinality.txt",
     "hash": "2f764608dc5998fe41544fde44660549de2955c1cbb6b99feb328bc444fff186"
   },
-  "BEAR-A/queries/sp-queries-highCardinality": {
+  "BEAR-A/queries/raw/sp-queries-highCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/sp/sp-queries-highCardinality.txt",
     "hash": "4951fb0edccc9b5a62f887f6413ff5a0e9931eb6f4b1457cf4be79aebc5258b8"
   },
-  "BEAR-A/queries/po-queries-lowCardinality": {
+  "BEAR-A/queries/raw/po-queries-lowCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/po/po-queries-lowCardinality.txt",
     "hash": "d402bc0cb4dcac158b33b4c2fba7cccd0d02ea2c8b473bf1904e68cb544f467b"
   },
-  "BEAR-A/queries/po-queries-highCardinality": {
+  "BEAR-A/queries/raw/po-queries-highCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/po/po-queries-highCardinality.txt",
     "hash": "b8ab08659c8302de67e9f011c394d5c03c30b96ad3e8ccd8545b9e1ae220fe6d"
   },
-  "BEAR-A/queries/so-queries-lowCardinality": {
+  "BEAR-A/queries/raw/so-queries-lowCardinality": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/so/so-queries-lowCardinality.txt",
     "hash": "b08ac654f5a48a6b06e6dd4ee18852b994e42f78bd564c03bd7a2f8651985b21"
   },
-  "BEAR-A/queries/spo-queries": {
+  "BEAR-A/queries/raw/spo-queries": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_A/Queries/spo/spo-queries.txt",
     "hash": "e5ad50eee9bdcfc67faa40c00aa10a3b963c1af043a34aa9179159ad306a48bd"
   },
@@ -266,15 +266,15 @@
     "hash": "9ea0c1554735e10e9d8d0c604326d51cb5435e868df31b0a908a668cb3d4cfaf",
     "archive": "gz"
   },
-  "BEAR-B/queries/p": {
+  "BEAR-B/queries/raw/p": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_B/Queries/p/p.txt",
     "hash": "4c69fb8ea365c6b64c2e54959831a0c7dfc0f237157b081b21ac02e4a5f9ee05"
   },
-  "BEAR-B/queries/po": {
+  "BEAR-B/queries/raw/po": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_B/Queries/po/po.txt",
     "hash": "b4f13ceb488b15270cfa835be7079d543f15d21327b6ad8d93c74682caee0c9e"
   },
-  "BEAR-B/queries/joins": {
+  "BEAR-B/queries/raw/joins": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_B/Queries/joins.zip",
     "hash": "4b10744308b39d08549e1a1d6fa4a3094ed8d38ef0fe97f4c9d12ef2dfff82be"
   },
@@ -354,43 +354,43 @@
     "hash": "e46a3fe5a8f6e2d87412e1ee99ef5b96e623d50ccfb26e3228f3772f01e41db5",
     "archive": "gz"
   },
-  "BEAR-C/queries/q1": {
+  "BEAR-C/queries/raw/q1": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q1.txt",
     "hash": "353617fa32c240b33c8c6a7cc3a6cd114ae108f1cf32be4ae64759135231dfd8"
   },
-  "BEAR-C/queries/q2": {
+  "BEAR-C/queries/raw/q2": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q2.txt",
     "hash": "af7ec56afea923ccad4efe504b4bf98bb0f9ff105d929f32618b44e6f2fcd1cd"
   },
-  "BEAR-C/queries/q3": {
+  "BEAR-C/queries/raw/q3": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q3.txt",
     "hash": "1695f9090c099bafaeeb966a3a98ac64912b3efd88887cb1692a17314631eafc"
   },
-  "BEAR-C/queries/q4": {
+  "BEAR-C/queries/raw/q4": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q4.txt",
     "hash": "0d8baa412c5a0fbbce93a7bf73a108afcc8f7ad746736c1b0bcf10b128492521"
   },
-  "BEAR-C/queries/q5": {
+  "BEAR-C/queries/raw/q5": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q5.txt",
     "hash": "cd2c265d1723d1115fa4ac0a8dde528f334bb2640b395b3fd6bac76210d9cc4f"
   },
-  "BEAR-C/queries/q6": {
+  "BEAR-C/queries/raw/q6": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q6.txt",
     "hash": "fbc163a9a2a4b708ea7b546613de449d34c824839e7d9b944aeb1860822ecbfa"
   },
-  "BEAR-C/queries/q7": {
+  "BEAR-C/queries/raw/q7": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q7.txt",
     "hash": "67732749588bcd11fdcce91ac7d9863840594afd894c4aef6f91bb5c66ce0904"
   },
-  "BEAR-C/queries/q8": {
+  "BEAR-C/queries/raw/q8": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q8.txt",
     "hash": "feb34727997ef50fae745b0dd465d09d19235452b38b7c9682bf1de2011a3dc6"
   },
-  "BEAR-C/queries/q9": {
+  "BEAR-C/queries/raw/q9": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q9.txt",
     "hash": "9a470657d071666b6f9a928bbc0e85281c13c10033c6a1067d3423cafe59c13b"
   },
-  "BEAR-C/queries/q10": {
+  "BEAR-C/queries/raw/q10": {
     "url": "https://aic.ai.wu.ac.at/qadlod/bear/BEAR_C/Queries/q10.txt",
     "hash": "14d335ed38ee4cb5c7aa82de9458c39e8f26c87ee4f6aee68624f03e1abc6728"
   }

@@ -17,6 +17,7 @@ info() {
 
 success() {
     echo -e "${GREEN}$1${NC}"
+    echo ""
 }
 
 error() {
@@ -101,6 +102,7 @@ else
     DATASET_FULL_NAME="$DATASET-$POLICY"
 fi
 
+info "Loading dataset..."
 cd $TOOL
 if $SCRIPT_DIR/$TOOL/load.sh "$DATASET_FULL_NAME"; then
     success "Dataset $DATASET_FULL_NAME loaded successfully to $TOOL"
@@ -109,10 +111,12 @@ else
 fi
 cd ..
 
-# Placeholder for additional experiment execution steps
-# This is where you would call the appropriate tool-specific scripts
-# based on the validated parameters
+info "Preparing queries..."
+if $SCRIPT_DIR/$TOOL/prepare-queries.sh "$DATASET"; then
+    success "Queries for $DATASET prepared successfully!"
+else
+    error "Failed to prepare queries for $DATASET"
+fi
 
-echo ""
 info "Note: Additional experiment execution logic to be implemented."
 
