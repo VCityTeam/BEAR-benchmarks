@@ -141,11 +141,33 @@ for QUERY_FILE in "$QUERY_DIR"/*.rq; do
     if [ -f "$QUERY_FILE" ]; then
         CURRENT=$((CURRENT + 1))
         QUERY_NAME=$(basename "$QUERY_FILE")
+        QUERY_BASE_NAME="${QUERY_NAME%.rq}"
 
         info "[$CURRENT/$TOTAL_QUERIES] Executing query: $QUERY_NAME"
 
+        # Measure query execution time (macOS uses gdate, Linux uses date)
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            # macOS - use gdate (from coreutils, brew install coreutils)
+            START_TIME=$(gdate +%s%3N)
+        else
+            # Linux - use date (which is GNU date)
+            START_TIME=$(date +%s%3N)
+        fi
+
         if $SCRIPT_DIR/$TOOL/query.sh -d "$DATASET" -n "$DATASET_FULL_NAME" -q "$QUERY_NAME"; then
-            success "Query $QUERY_NAME completed successfully!"
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+                END_TIME=$(gdate +%s%3N)
+            else
+                END_TIME=$(date +%s%3N)
+            fi
+            ELAPSED_TIME=$((END_TIME - START_TIME))
+
+            success "Query $QUERY_NAME completed successfully in ${ELAPSED_TIME}ms!"
+
+            # Log the query execution time
+            if ! $SCRIPT_DIR/lib/log-time.sh --dataset-full-name "$DATASET_FULL_NAME" --dataset "$DATASET" --policy "$POLICY" --granularity "$GRANULARITY_VALUE" --tag "$TAG" --query "$QUERY_BASE_NAME" --time "$ELAPSED_TIME" --tool "$TOOL"; then
+                error "Failed to log query time"
+            fi
         else
             error "Failed to execute query $QUERY_NAME"
         fi
