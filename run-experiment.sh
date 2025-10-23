@@ -42,6 +42,7 @@ GRANULARITY="$BEAR_GRANULARITY"
 CLEAR="$BEAR_CLEAR"
 VERBOSE="$BEAR_VERBOSE"
 TAG="$BEAR_TAG"
+N_RUNS="$BEAR_N_RUNS"
 
 info "==================================="
 info "BEAR Benchmark Experiment"
@@ -53,6 +54,7 @@ if [ -n "$GRANULARITY" ]; then
 fi
 echo "Policy:   $POLICY"
 echo "Tool:     $TOOL"
+echo "N_Runs:   $N_RUNS"
 echo "Clear:    $CLEAR"
 echo "Verbose:  $VERBOSE"
 info "==================================="
@@ -132,7 +134,7 @@ QUERY_DIR="$SCRIPT_DIR/experiment/queries/$DATASET"
 # Count total queries
 TOTAL_QUERIES=$(find "$QUERY_DIR" -name "*.rq" -type f | wc -l | tr -d ' ')
 
-info "Found $TOTAL_QUERIES query files to execute"
+info "Found $TOTAL_QUERIES query files to execute (each will run $N_RUNS time(s))"
 
 CURRENT=0
 cd $TOOL
@@ -145,36 +147,51 @@ for QUERY_FILE in "$QUERY_DIR"/*.rq; do
 
         info "[$CURRENT/$TOTAL_QUERIES] Executing query: $QUERY_NAME"
 
-        # Measure query execution time (macOS uses gdate, Linux uses date)
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            # macOS - use gdate (from coreutils, brew install coreutils)
-            START_TIME=$(gdate +%s%3N)
-        else
-            # Linux - use date (which is GNU date)
-            START_TIME=$(date +%s%3N)
-        fi
+        # Run the query N_RUNS times
+        for RUN in $(seq 1 $N_RUNS); do
+            if [ "$N_RUNS" -gt 1 ]; then
+                info "  Run $RUN/$N_RUNS"
+            fi
 
-        if $SCRIPT_DIR/$TOOL/query.sh -d "$DATASET" -n "$DATASET_FULL_NAME" -q "$QUERY_NAME"; then
+            # Measure query execution time (macOS uses gdate, Linux uses date)
             if [[ "$OSTYPE" == "darwin"* ]]; then
-                END_TIME=$(gdate +%s%3N)
+                # macOS - use gdate (from coreutils, brew install coreutils)
+                START_TIME=$(gdate +%s%3N)
             else
-                END_TIME=$(date +%s%3N)
+                # Linux - use date (which is GNU date)
+                START_TIME=$(date +%s%3N)
             fi
-            ELAPSED_TIME=$((END_TIME - START_TIME))
 
-            success "Query $QUERY_NAME completed successfully in ${ELAPSED_TIME}ms!"
+            if $SCRIPT_DIR/$TOOL/query.sh -d "$DATASET" -n "$DATASET_FULL_NAME" -q "$QUERY_NAME"; then
+                if [[ "$OSTYPE" == "darwin"* ]]; then
+                    END_TIME=$(gdate +%s%3N)
+                else
+                    END_TIME=$(date +%s%3N)
+                fi
+                ELAPSED_TIME=$((END_TIME - START_TIME))
 
-            # Log the query execution time
-            if ! $SCRIPT_DIR/lib/log-time.sh --dataset-full-name "$DATASET_FULL_NAME" --dataset "$DATASET" --policy "$POLICY" --granularity "$GRANULARITY_VALUE" --tag "$TAG" --query "$QUERY_BASE_NAME" --time "$ELAPSED_TIME" --tool "$TOOL"; then
-                error "Failed to log query time"
+                if [ "$N_RUNS" -gt 1 ]; then
+                    success "  Run $RUN/$N_RUNS completed in ${ELAPSED_TIME}ms!"
+                else
+                    success "Query $QUERY_NAME completed successfully in ${ELAPSED_TIME}ms!"
+                fi
+
+                # Log the query execution time
+                if ! $SCRIPT_DIR/lib/log-time.sh --dataset-full-name "$DATASET_FULL_NAME" --dataset "$DATASET" --policy "$POLICY" --granularity "$GRANULARITY_VALUE" --tag "$TAG" --query "$QUERY_BASE_NAME" --run-id "$RUN" --time "$ELAPSED_TIME" --tool "$TOOL"; then
+                    error "Failed to log query time"
+                fi
+            else
+                error "Failed to execute query $QUERY_NAME (run $RUN/$N_RUNS)"
             fi
-        else
-            error "Failed to execute query $QUERY_NAME"
+        done
+
+        if [ "$N_RUNS" -gt 1 ]; then
+            success "Query $QUERY_NAME: all $N_RUNS runs completed successfully!"
         fi
     fi
 done
 
 cd ..
 
-success "All $TOTAL_QUERIES queries executed successfully!"
+success "All $TOTAL_QUERIES queries executed successfully ($N_RUNS run(s) each)!"
 

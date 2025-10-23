@@ -11,7 +11,7 @@ NC='\033[0m' # No Color
 
 # Function to print usage
 usage() {
-    echo "Usage: $0 -d|--dataset <dataset> -p|--policy <policy> -t|--tool <tool> [-g|--granularity <granularity>] [-c|--clear] [-v|--verbose] [--tag <tag>]"
+    echo "Usage: $0 -d|--dataset <dataset> -p|--policy <policy> -t|--tool <tool> [-g|--granularity <granularity>] [-c|--clear] [-v|--verbose] [--tag <tag>] [-n|--n-runs <number>]"
     echo ""
     echo "Required Arguments:"
     echo "  -d, --dataset <value>   : BEAR-A | BEAR-B | BEAR-C"
@@ -25,13 +25,14 @@ usage() {
     echo "  -c, --clear             : Clear previous data (default: false)"
     echo "  -v, --verbose           : Enable verbose output (default: false)"
     echo "  --tag <value>           : Custom tag for this experiment run (default: username)"
+    echo "  -n, --n-runs <number>   : Number of times to run each query (default: 1)"
     echo "  -h, --help              : Show this help message"
     echo ""
     echo "Examples:"
     echo "  $0 -d BEAR-A -p IC -t jena-tdb-2"
     echo "  $0 --dataset BEAR-A --policy IC --tool jena-tdb-2 --clear --verbose"
     echo "  $0 -d BEAR-B -g day -p CBTB -t rdf-hdt -c -v --tag experiment-1"
-    echo "  $0 -d BEAR-C -p TB -t conver-g --tag baseline"
+    echo "  $0 -d BEAR-C -p TB -t conver-g --tag baseline --n-runs 3"
 }
 
 # Function to print error messages
@@ -99,6 +100,7 @@ parse_and_validate_args() {
     CLEAR=false
     TAG="$(whoami)"
     VERBOSE=false
+    N_RUNS=1
 
     # Initialize required arguments as empty
     DATASET=""
@@ -136,7 +138,10 @@ parse_and_validate_args() {
             --tag)
                 TAG="$2"
                 shift 2
-
+                ;;
+            -n|--n-runs)
+                N_RUNS="$2"
+                shift 2
                 ;;
             -h|--help)
                 usage
@@ -179,6 +184,11 @@ parse_and_validate_args() {
         fi
     fi
 
+    # Validate N_RUNS is a positive integer
+    if ! [[ "$N_RUNS" =~ ^[1-9][0-9]*$ ]]; then
+        error_with_usage "N_RUNS must be a positive integer, got: $N_RUNS"
+    fi
+
     # Export variables for use in calling script
     export BEAR_TAG="$TAG"
     export BEAR_DATASET="$DATASET"
@@ -187,5 +197,6 @@ parse_and_validate_args() {
     export BEAR_GRANULARITY="$GRANULARITY"
     export BEAR_CLEAR="$CLEAR"
     export BEAR_VERBOSE="$VERBOSE"
+    export BEAR_N_RUNS="$N_RUNS"
 }
 
