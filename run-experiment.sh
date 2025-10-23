@@ -83,6 +83,20 @@ else
     error "Failed to extract dataset"
 fi
 
+if [ -n "$GRANULARITY" ]; then
+    DATASET_FULL_NAME="$DATASET-$GRANULARITY-$POLICY"
+else
+    DATASET_FULL_NAME="$DATASET-$POLICY"
+fi
+
+cd $TOOL
+if $SCRIPT_DIR/$TOOL/load.sh "$DATASET_FULL_NAME"; then
+    success "Dataset $DATASET_FULL_NAME loaded successfully to $TOOL"
+else
+    error "Failed to load dataset $DATASET_FULL_NAME"
+fi
+cd ..
+
 # Placeholder for additional experiment execution steps
 # This is where you would call the appropriate tool-specific scripts
 # based on the validated parameters
