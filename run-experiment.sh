@@ -34,8 +34,6 @@ source "$SCRIPT_DIR/lib/parse-args.sh"
 # Parse and validate arguments
 parse_and_validate_args "$@"
 
-success "Arguments validated successfully!"
-
 # Get validated values from exported variables
 DATASET="$BEAR_DATASET"
 POLICY="$BEAR_POLICY"
@@ -44,7 +42,6 @@ GRANULARITY="$BEAR_GRANULARITY"
 CLEAR="$BEAR_CLEAR"
 VERBOSE="$BEAR_VERBOSE"
 
-echo ""
 info "==================================="
 info "BEAR Benchmark Experiment"
 info "==================================="
@@ -118,5 +115,33 @@ else
     error "Failed to prepare queries for $DATASET"
 fi
 
-info "Note: Additional experiment execution logic to be implemented."
+info "Running queries..."
+QUERY_DIR="$SCRIPT_DIR/experiment/queries/$DATASET"
+
+# Count total queries
+TOTAL_QUERIES=$(find "$QUERY_DIR" -name "*.rq" -type f | wc -l | tr -d ' ')
+
+info "Found $TOTAL_QUERIES query files to execute"
+
+CURRENT=0
+cd $TOOL
+
+for QUERY_FILE in "$QUERY_DIR"/*.rq; do
+    if [ -f "$QUERY_FILE" ]; then
+        CURRENT=$((CURRENT + 1))
+        QUERY_NAME=$(basename "$QUERY_FILE")
+
+        info "[$CURRENT/$TOTAL_QUERIES] Executing query: $QUERY_NAME"
+
+        if $SCRIPT_DIR/$TOOL/query.sh -d "$DATASET" -n "$DATASET_FULL_NAME" -q "$QUERY_NAME"; then
+            success "Query $QUERY_NAME completed successfully!"
+        else
+            error "Failed to execute query $QUERY_NAME"
+        fi
+    fi
+done
+
+cd ..
+
+success "All $TOTAL_QUERIES queries executed successfully!"
 
