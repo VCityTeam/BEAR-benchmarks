@@ -68,6 +68,18 @@ fi
 
 info "Starting experiment..."
 
+# Clear experiment folder if requested
+if [ "$CLEAR" = "true" ]; then
+    EXPERIMENT_DIR="$SCRIPT_DIR/experiment"
+    if [ -d "$EXPERIMENT_DIR" ]; then
+        info "Clearing experiment folder..."
+        rm -rf "$EXPERIMENT_DIR"
+        success "Experiment folder cleared successfully!"
+    else
+        info "Experiment folder does not exist, skipping clear."
+    fi
+fi
+
 info "Downloading inputs from BEAR..."
 if "$SCRIPT_DIR/bear-inputs/download-all.sh" -d "$DATASET" $VERBOSE_FLAG; then
     success "Dataset files downloaded successfully!"
