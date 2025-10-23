@@ -19,6 +19,11 @@ success() {
     echo -e "${GREEN}$1${NC}"
 }
 
+error() {
+    echo -e "${RED}ERROR: $1${NC}" >&2
+    exit 1
+}
+
 # Get the directory where this script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -53,15 +58,25 @@ echo "Verbose:  $VERBOSE"
 info "==================================="
 echo ""
 
+if [ "$VERBOSE" = "true" ]; then
+    VERBOSE_FLAG=" --verbose"
+fi
+
 info "Experiment configuration ready."
 
 # TODO: Add experiment execution logic here
 info "Starting experiment..."
 
-# Placeholder for actual experiment execution
+if "$SCRIPT_DIR/bear-inputs/download-all.sh" -d "$DATASET$VERBOSE_FLAG"; then
+    success "Dataset files downloaded successfully!"
+else
+    error "Failed to download dataset files"
+fi
+
+# Placeholder for additional experiment execution steps
 # This is where you would call the appropriate tool-specific scripts
 # based on the validated parameters
 
 echo ""
-info "Note: Experiment execution logic to be implemented."
+info "Note: Additional experiment execution logic to be implemented."
 
