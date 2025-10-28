@@ -1,5 +1,5 @@
 services:
-  jena-tdb:
+  jena-tdb-2:
     build: .
     volumes:
       - ./docker-scripts:/data/docker-scripts

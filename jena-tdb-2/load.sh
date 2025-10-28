@@ -13,7 +13,7 @@ docker compose build
 
 echo ""
 echo "Running TDB loader in Docker container..."
-docker compose run --rm jena-tdb bash /data/docker-scripts/load-tdb.sh "$DATASET"
+docker compose run --rm jena-tdb-2 bash /data/docker-scripts/load-tdb.sh "$DATASET"
 
 echo "TDB2 database is in: experiment/tdb-databases/$DATASET"
 

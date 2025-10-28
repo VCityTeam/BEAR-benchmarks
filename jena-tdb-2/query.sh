@@ -52,4 +52,4 @@ mkdir -p "$PROJECT_ROOT/experiment/results"
 
 echo "Querying TDB database ${DATASET_FULL_NAME} with query file: ${DATASET}/${QUERY_FILE}"
 
-docker compose run --rm jena-tdb tdb2.tdbquery --loc="$TDB_LOC" --query="$QUERY_PATH" > "$PROJECT_ROOT/experiment/results/${DATASET_FULL_NAME}-${QUERY_FILE%.rq}-result.txt"
+docker compose run --rm jena-tdb-2 tdb2.tdbquery --loc="$TDB_LOC" --query="$QUERY_PATH" > "$PROJECT_ROOT/experiment/results/${DATASET_FULL_NAME}-${QUERY_FILE%.rq}-result.txt"
