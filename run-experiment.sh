@@ -110,7 +110,6 @@ if $SCRIPT_DIR/$TOOL/load.sh "$DATASET_FULL_NAME"; then
 else
     error "Failed to load dataset $DATASET_FULL_NAME"
 fi
-cd ..
 
 # Set granularity to N/A if not set (for BEAR-A and BEAR-C)
 GRANULARITY_VALUE="${GRANULARITY:-N/A}"
@@ -120,6 +119,7 @@ if $SCRIPT_DIR/$TOOL/log-size.sh --dataset-full-name "$DATASET_FULL_NAME" --data
 else
     error "Failed to log database size"
 fi
+cd ..
 
 info "Preparing queries..."
 if $SCRIPT_DIR/$TOOL/prepare-queries.sh "$DATASET"; then
