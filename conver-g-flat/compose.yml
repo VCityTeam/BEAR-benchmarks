@@ -1,0 +1,86 @@
+services:
+  postgres:
+    image: postgres:15
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+      - ./docker-scripts:/data/docker-scripts
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=converg
+
+  postgres-flat:
+    image: postgres:15
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+      - ./docker-scripts:/data/docker-scripts
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=converg
+
+  quads-loader-cli:
+    image: vcity/quads-loader-cli:ql-cli-v3.1.1
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./docker-scripts:/data/docker-scripts
+      - ../experiment/datasets:/data/datasets
+    environment:
+      - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/converg"
+      - "SPRING_DATASOURCE_USERNAME=postgres"
+      - "SPRING_DATASOURCE_PASSWORD=password"
+      - "CONDENSED_MODE=true"
+
+  quads-loader-cli-flat:
+    image: vcity/quads-loader-cli:ql-cli-v3.1.1
+    depends_on:
+      postgres-flat:
+        condition: service_healthy
+    volumes:
+      - ./docker-scripts:/data/docker-scripts
+      - ../experiment/datasets:/data/datasets
+    environment:
+      - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-flat:5432/converg"
+      - "SPRING_DATASOURCE_USERNAME=postgres"
+      - "SPRING_DATASOURCE_PASSWORD=password"
+      - "CONDENSED_MODE=false"
+
+  quads-query-cli:
+    image: vcity/quads-query-cli:qq-cli-v3.0.0
+    depends_on:
+      - postgres
+    environment:
+      - "DATASOURCE_URL=jdbc:postgresql://postgres:5432/converg"
+      - "DATASOURCE_USERNAME=postgres"
+      - "DATASOURCE_PASSWORD=password"
+      - "CONDENSED_MODE=true"
+    volumes:
+      - ../experiment/queries:/data/queries
+
+  quads-query-cli-flat:
+    image: vcity/quads-query-cli:qq-cli-v3.0.0
+    depends_on:
+      - postgres-flat
+    environment:
+      - "DATASOURCE_URL=jdbc:postgresql://postgres-flat:5432/converg"
+      - "DATASOURCE_USERNAME=postgres"
+      - "DATASOURCE_PASSWORD=password"
+      - "CONDENSED_MODE=false"
+    volumes:
+      - ../experiment/queries:/data/queries

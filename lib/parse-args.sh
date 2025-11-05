@@ -16,7 +16,7 @@ usage() {
     echo "Required Arguments:"
     echo "  -d, --dataset <value>   : BEAR-A | BEAR-B | BEAR-C"
     echo "  -p, --policy <value>    : IC | CB | TB | CBTB"
-    echo "  -t, --tool <value>      : jena-tdb-1 | rdf-hdt | conver-g"
+    echo "  -t, --tool <value>      : jena-tdb-1 | rdf-hdt | conver-g | conver-g-flat"
     echo ""
     echo "Conditional Arguments:"
     echo "  -g, --granularity <value> : day | hour | instant (required for BEAR-B, not allowed for BEAR-A and BEAR-C)"
@@ -72,11 +72,11 @@ validate_policy() {
 validate_tool() {
     local tool=$1
     case "$tool" in
-        jena-tdb-1|rdf-hdt|conver-g)
+        jena-tdb-1|rdf-hdt|conver-g|conver-g-flat)
             return 0
             ;;
         *)
-            error_with_usage "Invalid tool: $tool. Must be one of: jena-tdb-1, rdf-hdt, conver-g"
+            error_with_usage "Invalid tool: $tool. Must be one of: jena-tdb-1, rdf-hdt, conver-g, conver-g-flat"
             ;;
     esac
 }
