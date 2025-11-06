@@ -32,4 +32,6 @@ for filename in "$DATASET_DIR"/*; do
     echo "import-version \"$filename\"" >> load-commands.txt
 done
 
+echo "flatten" >> load-commands.txt
+
 java -jar /opt/app/quads-cli-loader.jar script load-commands.txt

@@ -1,11 +1,25 @@
 services:
   jena-tdb-2:
-    build: .
+    build:
+      context: .
+      args:
+        JENA_UID: ${UID:-1000}
+        JENA_GID: ${GID:-1000}
     volumes:
       - ./docker-scripts:/data/docker-scripts
       - ../experiment/datasets:/data/datasets
       - ../experiment/queries:/data/queries
       - ../experiment/tdb-databases:/data/tdb-databases
+    environment:
+      - JVM_ARGS=-Xmx16G
+    working_dir: /data
+    stdin_open: true
+    tty: true
+
+  quads-creator:
+    image: vcity/quads-creator
+    volumes:
+      - ../experiment/datasets:/data
     environment:
       - JVM_ARGS=-Xmx16G
     working_dir: /data

@@ -105,7 +105,7 @@ fi
 
 info "Loading dataset..."
 cd $TOOL
-if $SCRIPT_DIR/$TOOL/load.sh "$DATASET_FULL_NAME"; then
+if $SCRIPT_DIR/$TOOL/load.sh "$DATASET_FULL_NAME" "$POLICY"; then
     success "Dataset $DATASET_FULL_NAME loaded successfully to $TOOL"
 else
     error "Failed to load dataset $DATASET_FULL_NAME"

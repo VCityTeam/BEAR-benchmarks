@@ -51,4 +51,4 @@ mkdir -p "$PROJECT_ROOT/experiment/results"
 
 echo "Querying ConVerG database ${DATASET_FULL_NAME} with query file: ${DATASET}/${QUERY_FILE}"
 
-docker compose run --rm quads-query-cli java -jar /opt/app/quads-query-cli.jar "$QUERY_PATH" > "$PROJECT_ROOT/experiment/results/${DATASET_FULL_NAME}-${QUERY_FILE%.rq}-result.txt"
+docker compose run --rm quads-query-cli-flat java -jar /opt/app/quads-query-cli.jar "$QUERY_PATH" > "$PROJECT_ROOT/experiment/results/${DATASET_FULL_NAME}-${QUERY_FILE%.rq}-result.txt"

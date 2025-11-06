@@ -4,7 +4,7 @@
 set -e
 
 # Query PostgreSQL to get the database size
-DB_SIZE=$(psql -U postgres -d converg -t -c "SELECT pg_database_size('converg');")
+DB_SIZE=$(psql -U postgres-flat -d converg-flat -t -c "SELECT pg_database_size('converg-flat');")
 
 if [ -z "$DB_SIZE" ]; then
     echo "ERROR: Failed to get database size from PostgreSQL"

@@ -55,7 +55,7 @@ CSV_FILE="$PROJECT_ROOT/benchmark-results/sizes.csv"
 
 echo "Getting PostgreSQL database size..."
 # Run the size logging script inside the Docker container and remove the whitespaces
-SIZE=$(docker compose exec postgres bash /data/docker-scripts/log-size.sh | tr -d '[:space:]')
+SIZE=$(docker compose exec postgres-flat bash /data/docker-scripts/log-size.sh | tr -d '[:space:]')
 
 if [ -z "$SIZE" ]; then
     echo "Error: Failed to get database size from PostgreSQL"
@@ -66,7 +66,7 @@ fi
 DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # Set tool name
-TOOL="postgres"
+TOOL="postgres-flat"
 
 # Create benchmark-results directory if it doesn't exist
 mkdir -p "$PROJECT_ROOT/benchmark-results"

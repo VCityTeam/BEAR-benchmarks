@@ -6,6 +6,7 @@ set -e
 DATASETS_DIR="/data/datasets"
 TDB_BASE_DIR="/data/tdb-databases"
 DATASET_NAME="${1}"
+POLICY="${2}"
 
 # Check if dataset name is provided
 if [ -z "$DATASET_NAME" ]; then
@@ -27,23 +28,8 @@ if [ -d "$TDB_LOC" ]; then
     exit 0
 fi
 
-# Function to load a single .nq file
-load_nq_file() {
-    local file=$1
-    local basename=$(basename "$file" .nq)
-
-    echo "Loading: ${basename}"
-    echo "  Source: $file"
-    echo "  Target: $TDB_LOC"
-
-    # Load with xloader
-    tdb2.xloader --loc="$TDB_LOC" "$file"
-    echo "  ✓ Complete"
-    echo ""
-}
-
-# Function to load directory with multiple .nq files
-load_nq_directory() {
+# Function to load directory with multiple .trig files
+load_trig_directory() {
     local dir=$1
     local basename=$(basename "$dir")
 
@@ -51,8 +37,8 @@ load_nq_directory() {
     echo "  Source: $dir"
     echo "  Target: $TDB_LOC"
 
-    # Load all .nq files in directory
-    tdb2.xloader --loc="$TDB_LOC" "$dir"/*.nq
+    # Load all .trig files in directory
+    tdb2.xloader --loc="$TDB_LOC" "$dir"/*.trig
     echo "  ✓ Complete"
     echo ""
 }
@@ -122,23 +108,20 @@ if [ ! -d "$DATASETS_DIR" ]; then
     exit 1
 fi
 
-# Check if dataset exists as a .nq file
-NQ_FILE="${DATASETS_DIR}/${DATASET_NAME}.nq"
+# Check if dataset exists as a .trig files
+TRIG_FILES="${DATASETS_DIR}/${DATASET_NAME}/*.trig"
 DATASET_DIR="${DATASETS_DIR}/${DATASET_NAME}"
 
-if [ -f "$NQ_FILE" ]; then
-    echo "Found .nq file: $NQ_FILE"
-    load_nq_file "$NQ_FILE"
-elif [ -d "$DATASET_DIR" ] && [ "$(ls -A $DATASET_DIR/*.nq 2>/dev/null)" ]; then
-    echo "Found directory with .nq files: $DATASET_DIR"
-    load_nq_directory "$DATASET_DIR"
+if [ -d "$DATASET_DIR" ] && [ "$(ls -A $DATASET_DIR/*.trig 2>/dev/null)" ]; then
+    echo "Found directory with .trig files: $DATASET_DIR"
+    load_trig_directory "$DATASET_DIR"
 elif [ -d "$DATASET_DIR" ] && [ "$(ls -A $DATASET_DIR/data-added_*.nt 2>/dev/null)" ]; then
     echo "Found directory with Change-Based (CB) .nt files: $DATASET_DIR"
     load_cb_directory "$DATASET_DIR"
 else
     echo "ERROR: Dataset not found: ${DATASET_NAME}"
     echo "Looked for:"
-    echo "  - ${NQ_FILE}"
+    echo "  - ${TRIG_FILES}"
     echo "  - ${DATASET_DIR}/ (with .nq files)"
     echo "  - ${DATASET_DIR}/ (with CB .nt files: data-added_*.nt, data-deleted_*.nt)"
     exit 1
