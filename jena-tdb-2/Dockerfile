@@ -7,8 +7,8 @@ RUN apt-get update && \
 
 # Allow the build to set the runtime user (match host UID/GID if desired)
 ARG JENA_USER=jena
-ARG JENA_UID=1000
-ARG JENA_GID=1000
+ARG JENA_UID=${UID:-1000}
+ARG JENA_GID=${GID:-1000}
 
 ENV JENA_USER=${JENA_USER}
 ENV JENA_UID=${JENA_UID}
