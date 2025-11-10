@@ -7,3 +7,11 @@
 !download-all.sh
 !extract.sh
 !prepare-rq-queries.sh
+!BEAR-A/
+!BEAR-A/queries/
+!BEAR-A/queries/extra/
+!BEAR-A/queries/extra/**
+!BEAR-B/
+!BEAR-B/queries/
+!BEAR-B/queries/extra/
+!BEAR-B/queries/extra/**

@@ -28,7 +28,7 @@ if [ ! -d "$DATASET_DIR" ]; then
     exit 1
 fi
 
-for filename in "$DATASET_DIR"/*; do
+for filename in "$DATASET_DIR"/*.trig; do
     echo "import-version \"$filename\"" >> load-commands.txt
 done
 

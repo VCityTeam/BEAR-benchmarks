@@ -51,6 +51,7 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RAW_DIR="${SCRIPT_DIR}/${DATASET}/queries/raw"
 OUTPUT_DIR="${SCRIPT_DIR}/${DATASET}/queries/rq"
+EXTRA_DIR="${SCRIPT_DIR}/${DATASET}/queries/extra"
 
 
 # Check if raw directory exists
@@ -195,4 +196,33 @@ done
 
 echo ""
 echo "Done! All queries have been split into individual .rq files in: $OUTPUT_DIR"
+
+# Copy any manually provided extra queries so they get executed along with the generated ones
+if [ -d "$EXTRA_DIR" ]; then
+    shopt -s nullglob
+    EXTRA_FILES=("$EXTRA_DIR"/*.rq "$EXTRA_DIR"/*.sparql)
+    shopt -u nullglob
+
+    if [ ${#EXTRA_FILES[@]} -gt 0 ]; then
+        echo ""
+        echo "Including extra queries found in: $EXTRA_DIR"
+        for extra_file in "${EXTRA_FILES[@]}"; do
+            [ -e "$extra_file" ] || continue
+            extra_name=$(basename "$extra_file")
+            dest_file="${OUTPUT_DIR}/${extra_name}"
+
+            if [ -e "$dest_file" ]; then
+                echo "  Overwriting existing query with extra query: $extra_name"
+            else
+                echo "  Added extra query: $extra_name"
+            fi
+
+            cp "$extra_file" "$dest_file"
+        done
+        echo "Finished copying extra queries to: $OUTPUT_DIR"
+    else
+        echo ""
+        echo "Extra queries directory detected but no .rq or .sparql files were found: $EXTRA_DIR"
+    fi
+fi
 

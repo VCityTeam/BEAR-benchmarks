@@ -1,0 +1,5 @@
+SELECT (COUNT(?o) AS ?counto) WHERE {
+  GRAPH ?g {
+    ?s <http://www.w3.org/1999/xhtml/vocab#icon> ?o .
+  }
+} GROUP BY ?s

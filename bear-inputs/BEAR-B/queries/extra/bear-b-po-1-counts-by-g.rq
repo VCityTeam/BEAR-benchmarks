@@ -1,0 +1,5 @@
+SELECT (COUNT(?s) AS ?counts) WHERE {
+  GRAPH ?g {
+    ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/MusicalArtist> .
+  }
+} GROUP BY ?g

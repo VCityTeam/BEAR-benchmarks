@@ -1,0 +1,5 @@
+SELECT (COUNT(?o) AS ?counto) WHERE {
+  GRAPH ?g {
+    ?s <http://www.w3.org/2000/01/rdf-schema#label> ?o .
+  }
+} GROUP BY ?s
