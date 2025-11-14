@@ -57,7 +57,6 @@ for tool in "${TOOLS[@]}"; do
     echo ""
     success "Completed benchmark for tool: $tool"
     echo ""
-
 done
 
 success "All benchmarks completed successfully!"

@@ -191,7 +191,15 @@ for QUERY_FILE in "$QUERY_DIR"/*.rq; do
     fi
 done
 
-cd ..
-
 success "All $TOTAL_QUERIES queries executed successfully ($N_RUNS run(s) each)!"
 
+
+# Finalization of the tool experiment: clean up
+
+if $SCRIPT_DIR/$TOOL/finalize-script.sh; then 
+    success "Finalization of $TOOL completed successfully!"
+else
+    error "Finalization of $TOOL failed!"
+fi
+
+cd ..
