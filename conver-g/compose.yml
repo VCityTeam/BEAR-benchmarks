@@ -29,6 +29,7 @@ services:
       - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/converg"
       - "SPRING_DATASOURCE_USERNAME=postgres"
       - "SPRING_DATASOURCE_PASSWORD=password"
+      - JVM_ARGS=-Xmx16G
 
   quads-query-cli:
     image: vcity/quads-query-cli:qq-cli-v3.0.0
@@ -39,5 +40,6 @@ services:
       - "DATASOURCE_USERNAME=postgres"
       - "DATASOURCE_PASSWORD=password"
       - "CONDENSED_MODE=true"
+      - JVM_ARGS=-Xmx16G
     volumes:
       - ../experiment/queries:/data/queries

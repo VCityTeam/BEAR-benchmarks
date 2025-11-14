@@ -29,6 +29,7 @@ services:
       - "SPRING_DATASOURCE_USERNAME=postgres-flat"
       - "SPRING_DATASOURCE_PASSWORD=password-flat"
       - "CONDENSED_MODE=false"
+      - JVM_ARGS=-Xmx16G
 
   quads-query-cli-flat:
     image: vcity/quads-query-cli:qq-cli-v3.0.0
@@ -39,5 +40,6 @@ services:
       - "DATASOURCE_USERNAME=postgres-flat"
       - "DATASOURCE_PASSWORD=password-flat"
       - "CONDENSED_MODE=false"
+      - JVM_ARGS=-Xmx16G
     volumes:
       - ../experiment/queries:/data/queries

@@ -20,8 +20,6 @@ services:
     image: vcity/quads-creator
     volumes:
       - ../experiment/datasets:/data
-    environment:
-      - JVM_ARGS=-Xmx16G
     working_dir: /data
     stdin_open: true
     tty: true
