@@ -23,4 +23,7 @@ fi
 
 "${DOCKER_COMPOSE_CMD[@]}" -f "$COMPOSE_FILE" down
 
+# removing pg-data folder
+rm -rf "$SCRIPT_DIR/pg-data"
+
 echo "Docker Compose stack stopped."
