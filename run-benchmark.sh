@@ -46,17 +46,55 @@ declare -a TOOLS=(
     "conver-g"
 )
 
-for tool in "${TOOLS[@]}"; do
-    info "==================================="
-    info "Running BEAR benchmark for tool: $tool"
-    info "==================================="
-    echo ""
+declare -a datasets=(
+    "BEAR-A"
+    "BEAR-B-day"
+    "BEAR-B-hour"
+    "BEAR-B-instant"
+)
 
-    "$RUN_EXPERIMENT_SCRIPT" "$@" --tool "$tool"
+# function that takes a dataset name and returns the corresponding script parameters
+get_dataset_params() {
+    local dataset=$1
+    case "$dataset" in
+        BEAR-A)
+            echo "-d BEAR-A"
+            ;;
+        BEAR-B-day)
+            echo "-d BEAR-B -g day"
+            ;;
+        BEAR-B-hour)
+            echo "-d BEAR-B -g hour"
+            ;;
+        BEAR-B-instant)
+            echo "-d BEAR-B -g instant"
+            ;;
+        BEAR-C)
+            echo "-d BEAR-C"
+            ;;
+        *)
+            error "Unknown dataset: $dataset"
+            ;;
+    esac
+}
 
-    echo ""
-    success "Completed benchmark for tool: $tool"
-    echo ""
+
+
+for dataset in "${datasets[@]}"; do
+    dataset_params=$(get_dataset_params "$dataset")
+    
+    for tool in "${TOOLS[@]}"; do
+        info "==================================="
+        info "Running BEAR benchmark for tool: $tool on dataset: $dataset"
+        info "==================================="
+        echo ""
+
+        "$RUN_EXPERIMENT_SCRIPT" "$@" --tool "$tool" $dataset_params
+
+        echo ""
+        success "Completed benchmark for tool: $tool on dataset: $dataset"
+        echo ""
+    done
 done
 
 success "All benchmarks completed successfully!"
