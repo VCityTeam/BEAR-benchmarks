@@ -47,7 +47,6 @@ declare -a TOOLS=(
 )
 
 declare -a datasets=(
-    "BEAR-A"
     "BEAR-B-day"
     "BEAR-B-hour"
     "BEAR-B-instant"
