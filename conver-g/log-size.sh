@@ -24,6 +24,10 @@ while [[ $# -gt 0 ]]; do
             TAG="$2"
             shift 2
             ;;
+        --dataset-full-name)
+            DATASET_FULL_NAME="$2"
+            shift 2
+            ;;
         *)
             echo "Unknown argument: $1"
             echo "Usage: $0 --dataset <dataset> --policy <policy> --granularity <granularity> --tag <tag>"
@@ -55,7 +59,7 @@ CSV_FILE="$PROJECT_ROOT/benchmark-results/sizes.csv"
 
 echo "Getting PostgreSQL database size..."
 # Run the size logging script inside the Docker container and remove the whitespaces
-SIZE=$(docker compose exec postgres bash /data/docker-scripts/log-size.sh | tr -d '[:space:]')
+SIZE=$(DATASET_NAME="$DATASET_FULL_NAME" docker compose exec postgres bash /data/docker-scripts/log-size.sh | tr -d '[:space:]')
 
 if [ -z "$SIZE" ]; then
     echo "Error: Failed to get database size from PostgreSQL"

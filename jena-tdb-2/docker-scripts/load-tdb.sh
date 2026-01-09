@@ -108,23 +108,34 @@ if [ ! -d "$DATASETS_DIR" ]; then
     exit 1
 fi
 
-# Check if dataset exists as a .trig files
-TRIG_FILES="${DATASETS_DIR}/${DATASET_NAME}/*.trig"
 DATASET_DIR="${DATASETS_DIR}/${DATASET_NAME}"
 
-if [ -d "$DATASET_DIR" ] && [ "$(ls -A $DATASET_DIR/*.trig 2>/dev/null)" ]; then
-    echo "Found directory with .trig files: $DATASET_DIR"
-    load_trig_directory "$DATASET_DIR"
-elif [ -d "$DATASET_DIR" ] && [ "$(ls -A $DATASET_DIR/data-added_*.nt 2>/dev/null)" ]; then
-    echo "Found directory with Change-Based (CB) .nt files: $DATASET_DIR"
-    load_cb_directory "$DATASET_DIR"
-else
-    echo "ERROR: Dataset not found: ${DATASET_NAME}"
-    echo "Looked for:"
-    echo "  - ${TRIG_FILES}"
-    echo "  - ${DATASET_DIR}/ (with .nq files)"
-    echo "  - ${DATASET_DIR}/ (with CB .nt files: data-added_*.nt, data-deleted_*.nt)"
+# Check if dataset directory exists
+if [ ! -d "$DATASET_DIR" ]; then
+    echo "ERROR: Dataset directory not found: $DATASET_DIR"
     exit 1
 fi
+
+# Select loading strategy based on policy
+case "$POLICY" in
+    "CBTB")
+        # Change-Based Time-Based: loads additions/deletions from .nt files
+        load_cb_directory "$DATASET_DIR"
+        ;;
+    "TB")
+        # Time-Based: loads snapshots from .trig files
+        load_trig_directory "$DATASET_DIR"
+        ;;
+    "IC")
+        echo "IC policy selected"
+        ;;
+    "CB")
+        echo "CB policy selected"
+        ;;
+    *)
+        echo "ERROR: Unknown policy: $POLICY"
+        exit 1
+        ;;
+esac
 
 echo "TDB2 database is in: $TDB_LOC"

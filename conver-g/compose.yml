@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres:15
     volumes:
-      - ./pg-data:/var/lib/postgresql/data
+      - ../experiment/converg:/data/converg
       - ./docker-scripts:/data/docker-scripts
     ports:
       - "5432:5432"
@@ -15,6 +15,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=converg
+      - PGDATA=/data/converg/${DATASET_NAME:-default}
 
   quads-loader-cli:
     image: vcity/quads-loader-cli:ql-cli-v3.1.1

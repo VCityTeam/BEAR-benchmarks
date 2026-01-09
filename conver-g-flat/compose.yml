@@ -2,7 +2,7 @@ services:
   postgres-flat:
     image: postgres:15
     volumes:
-      - ./pg-data:/var/lib/postgresql/data
+      - ../experiment/converg-flat:/data/converg-flat
       - ./docker-scripts:/data/docker-scripts
     ports:
       - "5432:5432"
@@ -15,6 +15,7 @@ services:
       - POSTGRES_USER=postgres-flat
       - POSTGRES_PASSWORD=password-flat
       - POSTGRES_DB=converg-flat
+      - PGDATA=/data/converg-flat/${DATASET_NAME:-default}
 
   quads-loader-cli-flat:
     image: vcity/quads-loader-cli:ql-cli-v3.1.1

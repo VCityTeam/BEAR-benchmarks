@@ -46,52 +46,23 @@ declare -a TOOLS=(
     "conver-g"
 )
 
-declare -a datasets=(
-    "BEAR-B-day"
-    "BEAR-B-hour"
-    "BEAR-B-instant"
+declare -a policies=(
+    "TB"
+    "IC"
+    "CB"
 )
 
-# function that takes a dataset name and returns the corresponding script parameters
-get_dataset_params() {
-    local dataset=$1
-    case "$dataset" in
-        BEAR-A)
-            echo "-d BEAR-A"
-            ;;
-        BEAR-B-day)
-            echo "-d BEAR-B -g day"
-            ;;
-        BEAR-B-hour)
-            echo "-d BEAR-B -g hour"
-            ;;
-        BEAR-B-instant)
-            echo "-d BEAR-B -g instant"
-            ;;
-        BEAR-C)
-            echo "-d BEAR-C"
-            ;;
-        *)
-            error "Unknown dataset: $dataset"
-            ;;
-    esac
-}
-
-
-
-for dataset in "${datasets[@]}"; do
-    dataset_params=$(get_dataset_params "$dataset")
-    
+for policy in "${policies[@]}"; do
     for tool in "${TOOLS[@]}"; do
         info "==================================="
-        info "Running BEAR benchmark for tool: $tool on dataset: $dataset"
+        info "Running BEAR benchmark for tool: $tool on policy: $policy (BEAR-B-day)"
         info "==================================="
         echo ""
 
-        "$RUN_EXPERIMENT_SCRIPT" "$@" --tool "$tool" $dataset_params
+        "$RUN_EXPERIMENT_SCRIPT" "$@" --tool "$tool" -d BEAR-B -g day -p "$policy"
 
         echo ""
-        success "Completed benchmark for tool: $tool on dataset: $dataset"
+        success "Completed benchmark for tool: $tool on policy: $policy"
         echo ""
     done
 done
